@@ -1,0 +1,29 @@
+-- Создаем главную таблицу "Отправители"
+CREATE TABLE Senders (
+    Sender_ID SERIAL PRIMARY KEY, 
+    Last_Name VARCHAR(50) NOT NULL,
+    First_Name VARCHAR(50) NOT NULL,
+    Middle_Name VARCHAR(50), 
+    Address TEXT NOT NULL,
+    Passport_Data VARCHAR(20) UNIQUE NOT NULL, 
+    Contact_Phone VARCHAR(20) NOT NULL
+);
+
+-- Создаем зависимую таблицу "Корреспонденция" (с типом REAL)
+CREATE TABLE Correspondence (
+    Track_Number VARCHAR(30) PRIMARY KEY,
+    Type_Code INT NOT NULL,
+    Weight REAL NOT NULL, 
+    Length REAL NOT NULL,
+    Width REAL NOT NULL,
+    Height REAL NOT NULL,
+    Sender_ID INT NOT NULL,
+    Stamps_Sum REAL NOT NULL,
+    
+    -- Внешний ключ с каскадным обновлением и удалением
+    CONSTRAINT fk_sender
+        FOREIGN KEY (Sender_ID) 
+        REFERENCES Senders (Sender_ID)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+);
